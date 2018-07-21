@@ -1,7 +1,5 @@
 # An arduino based backlight solution
 
-[![N|Solid](https://cldup.com/dTxpPi9lDf.thumb.png)](https://nodesource.com/products/nsolid)
-
 This project was created to make a backlight solution using RGB LEDs and an arduino on the windows platform. The solution will detect a display's width and height values, and calculate the average colour on the display.
 
 ### Requirements
