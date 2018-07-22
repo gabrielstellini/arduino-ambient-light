@@ -1,34 +1,85 @@
-int red, green, blue; //red, green and blue values
+const byte numChars = 32;
+char receivedChars[numChars];
+
 int RedPin = 9; //Red pin 9 has a PWM
 int GreenPin = 10; //Green pin 10 has a PWM
 int BluePin = 11; //Blue pin 11 has a PWM
-void setup()
-{
 
-Serial.begin(9600);
-//initial values (no significance)
-int red = 255;
-int blue = 255;
-int green = 255;
+char seperator = ',';
+
+boolean newData = false;
+
+void setup() {
+    Serial.begin(2000000);
+    Serial.println("<Arduino is ready>");
+
+    pinMode(RedPin, OUTPUT);
+    pinMode(GreenPin, OUTPUT);
+    pinMode(BluePin, OUTPUT);
 }
 
-void loop()
-{
-
-//protocol expects data in format of 4 bytes
-//(xff) as a marker to ensure proper synchronization always
-//followed by red, green, blue bytes
-if (Serial.available()>=4) {
-  if(Serial.read() == 0xff){
-    red = 255-Serial.read();
-    green= 255-Serial.read();
-    blue = 255-Serial.read();
-  }
+void loop() {
+    recvWithStartEndMarkers();
+    showNewData();
 }
-//finally control led brightness through pulse-width modulation
-red = 0;
 
-analogWrite (RedPin, red);
-analogWrite (GreenPin, green);
-analogWrite (BluePin, blue);
+void recvWithStartEndMarkers() {
+    static boolean recvInProgress = false;
+    static byte ndx = 0;
+    char startMarker = '<';
+    char endMarker = '>';
+    char rc;
+ 
+    while (Serial.available() > 0 && newData == false) {
+        rc = Serial.read();
+
+        if (recvInProgress == true) {
+            if (rc != endMarker) {
+                receivedChars[ndx] = rc;
+                ndx++;
+                if (ndx >= numChars) {
+                    ndx = numChars - 1;
+                }
+            }
+            else {
+                receivedChars[ndx] = '\0'; // terminate the string
+                recvInProgress = false;
+                ndx = 0;
+                newData = true;
+            }
+        }
+
+        else if (rc == startMarker) {
+            recvInProgress = true;
+        }
+    }
 }
+
+void showNewData() {
+    if (newData == true) {
+//        Serial.print("This just in ... ");
+//        Serial.println(receivedChars);
+        newData = false;
+
+        int red = 255;
+        int blue = 255;
+        int green = 255;
+
+
+        
+        sscanf(receivedChars, "%d,%d,%d", &red, &green, &blue);
+        
+        
+        red = 255-red;
+        green= 255-green;
+        blue = 255-blue;
+
+        analogWrite (RedPin, red);
+        analogWrite (GreenPin, green);
+        analogWrite (BluePin, blue);
+
+//        Serial.print(red);
+    }
+}
+
+

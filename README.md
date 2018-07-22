@@ -25,7 +25,3 @@ This project was created to make a backlight solution using RGB LEDs and an ardu
 3) Download and run the provided compiled exe (or compile and run in the Processing environment). The program should show a box with the average colour detected on-screen
 
 4) [Optional] Add the exe as a shortcut in the startup directory and hide the window
-
-### Credits
-
- Rajarshi Roy and James Bruce for some of the code
