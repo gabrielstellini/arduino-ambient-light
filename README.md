@@ -1,11 +1,11 @@
-# An affordable Arduino LED backlight solution
+# Ambient light using Arduino and Windows
 
-This project was created to make a backlight solution using RGB LEDs and an arduino on the windows platform. The solution will detect a display's width and height values, and calculate the average colour on the display.
+An ambient light solution designed for Windows PCs.
 
 ### Requirements
 - arduino
 - non-digital rgb cable
-- windows PC or Processing for code compilation
+- windows PC
 
 ### Setup & Installation
 
@@ -19,9 +19,15 @@ This project was created to make a backlight solution using RGB LEDs and an ardu
     | Blue | 11      |
     | Power | Power source    |
 
-    For power I modified the original USB power that came with the LED strip
+    
 
 
-3) Download and run the provided compiled exe (or compile and run in the Processing environment). The program should show a box with the average colour detected on-screen
+3) Download and run the provided compiled exe (or compile and run in the Processing environment).
 
-4) [Optional] Add the exe as a shortcut in the startup directory and hide the window
+4) [Optional] Add the exe as a shortcut in the startup directory under the shell:startup directory
+
+### Additional notes
+
+The power provided by the arduino does not have enough amperage to drive the LEDs. The LEDs that were used for this project came with a cable which allowed control via a remote - this was modified to provide power to the LEDs.
+
+The application also doesn't work with fullscreen directx games, as these connect directly to the gpu and stop the app from functioning. Similarly, the app doesn't work on the "run as admin screen" and lock screen.
